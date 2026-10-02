@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Piraeus container cargo — integrated analysis</title>
+  <style>
+    :root{color-scheme:light dark;--bg:#f4f7fa;--panel:#fff;--text:#152238;--muted:#66758a;--grid:#dce3ea;--total:#0b6e75;--external:#d97706;--internal:#64748b;--ratio:#7c3aed;--accent-soft:#dff3f2;--shadow:0 16px 44px rgba(27,45,72,.10)}
+    @media(prefers-color-scheme:dark){:root{--bg:#0d1520;--panel:#151f2c;--text:#edf3f8;--muted:#aab8c7;--grid:#344253;--total:#59d2cf;--external:#f8b14b;--internal:#aab8c7;--ratio:#c4a7ff;--accent-soft:#183b42;--shadow:0 16px 44px rgba(0,0,0,.25)}}
+    *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}main{width:min(1180px,calc(100% - 32px));margin:40px auto 56px}header{display:flex;align-items:end;justify-content:space-between;gap:24px;margin-bottom:18px}h1{margin:0 0 7px;font-size:clamp(1.55rem,3vw,2.35rem);line-height:1.1;letter-spacing:-.035em}.subtitle,.range{margin:0;color:var(--muted)}.range{white-space:nowrap;font-variant-numeric:tabular-nums}.panel{background:var(--panel);border-radius:18px;box-shadow:var(--shadow);padding:22px}.panel+.panel{margin-top:24px}.analysis-section-heading{margin:38px 2px 14px;padding:0 2px 11px;border-bottom:2px solid var(--grid)}.analysis-section-heading h2{margin:0;font-size:clamp(1.2rem,2.2vw,1.65rem);letter-spacing:-.02em}.analysis-section-heading p{margin:5px 0 0;color:var(--muted);font-size:.88rem}.chart-head{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;margin-bottom:8px}.metric{color:var(--muted);font-size:.86rem}.legend{display:flex;gap:18px;flex-wrap:wrap;color:var(--muted);font-size:.9rem}.legend span{display:inline-flex;align-items:center;gap:7px}.swatch{width:22px;height:3px;border-radius:2px;background:var(--swatch)}.swatch.total{height:4px}.event-model{display:flex;flex-wrap:wrap;gap:8px 22px;margin:10px 0 2px;color:var(--muted);font-size:.84rem;font-variant-numeric:tabular-nums}.event-model strong{color:var(--text);font-weight:650}.result-callout{margin:14px 0 4px;padding:13px 15px;border-left:4px solid var(--total);border-radius:8px;background:var(--accent-soft);font-size:.9rem}.result-callout p{margin:0}.event-notes{display:grid;gap:7px;margin-top:12px;color:var(--muted);font-size:.84rem}.event-notes p{margin:0;max-width:1040px}.chart-wrap{position:relative;width:100%;min-height:460px}.event-chart,.series-chart,.forest-chart{display:block;width:100%;height:500px;overflow:visible}.series-chart{height:500px}.forest-chart{height:360px}.grid-line{stroke:var(--grid);stroke-width:1}.axis-label,.year-label,.axis-title{fill:var(--muted);font-size:12px}.axis-label.right,.axis-title.right{fill:var(--ratio)}.year-label{text-anchor:middle}.axis-title{font-size:12px}.event-ci{stroke:var(--internal);stroke-width:1.5}.event-point{fill:var(--total);stroke:var(--panel);stroke-width:2.5}.event-point.pre{fill:var(--internal)}.event-zero{stroke:var(--text);stroke-width:1.4}.ratio-zero{stroke:var(--ratio);stroke-width:1.2;stroke-dasharray:3 4;opacity:.65}.event-treatment{stroke:var(--external);stroke-width:1.5;stroke-dasharray:5 4}.event-annotation{fill:var(--external);font-size:12px;font-weight:650}.series-line{fill:none;stroke-linejoin:round;stroke-linecap:round}.series-container{stroke:var(--total);stroke-width:3.6}.series-noncontainer{stroke:var(--external);stroke-width:2.7}.series-ratio{stroke:var(--ratio);stroke-width:3.2}.point-container{fill:var(--total)}.point-noncontainer{fill:var(--external)}.tooltip{position:absolute;display:none;pointer-events:none;min-width:185px;padding:11px 12px;border-radius:10px;background:var(--text);color:var(--panel);box-shadow:var(--shadow);font-size:.84rem;line-height:1.5;z-index:2}.tooltip strong{display:block;font-size:.95rem;margin-bottom:3px}.tooltip .row{display:flex;justify-content:space-between;gap:20px}.tooltip .value{font-variant-numeric:tabular-nums;font-weight:650}.hit{fill:transparent;cursor:crosshair}.two-chart-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}.subchart{min-width:0}.subchart h3{margin:10px 0 2px;font-size:.94rem}.normalization-controls{display:flex;gap:8px;flex-wrap:wrap}button{border:1px solid var(--grid);border-radius:9px;background:var(--panel);color:var(--text);padding:8px 11px;font:inherit;cursor:pointer}button:hover,button.active{background:var(--accent-soft)}.table-wrap{overflow-x:auto;margin-top:12px}table{width:100%;border-collapse:collapse;font-size:.86rem}th,td{border-bottom:1px solid var(--grid);padding:9px 10px;text-align:right;white-space:nowrap}th:first-child,td:first-child{text-align:left}th{color:var(--muted);font-weight:650}td{font-variant-numeric:tabular-nums}tr.derived td{background:var(--accent-soft)}details{margin-top:20px}summary{cursor:pointer;color:var(--text);font-weight:650}.interpretation{margin-top:16px;padding:14px 16px;border:1px solid var(--grid);border-radius:11px}.interpretation h3{margin:0 0 6px;font-size:.95rem}.interpretation p{margin:0;color:var(--muted);font-size:.88rem;line-height:1.55}.interpretation p+p{margin-top:8px}.sensitivity-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start}.notes{display:grid;grid-template-columns:1fr auto;align-items:start;gap:18px;margin-top:12px;color:var(--muted);font-size:.84rem}.notes p{margin:0;max-width:900px}.footer{margin-top:28px;color:var(--muted);font-size:.78rem;text-align:center}.forest-ci{stroke:var(--internal);stroke-width:2}.forest-point{fill:var(--total);stroke:var(--panel);stroke-width:2}.forest-zero{stroke:var(--text);stroke-dasharray:4 4}.forest-label{fill:var(--text);font-size:12px}.forest-value{fill:var(--muted);font-size:11px}
+    .event-chart{height:520px}.event-zero{stroke-width:1.5}
+    @media(max-width:900px){.two-chart-grid,.sensitivity-grid{grid-template-columns:1fr}.series-chart{height:430px}}@media(max-width:680px){main{width:min(100% - 18px,1180px);margin-top:22px}header{align-items:start;flex-direction:column;gap:6px}.panel{padding:14px;border-radius:13px}.event-chart{height:430px}.notes{grid-template-columns:1fr}.two-chart-grid{gap:4px}}
+  </style>
+</head>
+<body><main>
+  <header><div><h1>Piraeus container cargo — integrated analysis</h1><p class="subtitle">Seasonally adjusted DiD, within-port comparison, donor sensitivity, and staggered adoption</p></div><p class="range">2014 Q1–2025 Q4</p></header>
+
+  <div class="analysis-section-heading"><h2>1. Headline seasonally adjusted DiD</h2><p>Piraeus container cargo · all five container-active ports · short pre-COVID estimation window.</p></div>
+  <section class="panel">
+    <div class="chart-head"><span class="metric">Treatment timing and headline estimates</span></div>
+    <div class="event-model"><span><strong>Transition:</strong> 2016 Q3 excluded</span><span><strong>Last clean pre-quarter:</strong> 2016 Q2</span><span><strong>First post-quarter:</strong> 2016 Q4</span><span><strong>Outcome:</strong> ln(container cargo tonnes)</span></div>
+    <div class="result-callout" id="headline-callout"></div>
+    <div class="table-wrap"><table><thead><tr><th>Quantity</th><th>Estimate</th><th>95% CI</th><th>p-value</th><th>Interpretation</th></tr></thead><tbody id="headline-table"></tbody></table></div>
+    <div class="event-notes"><p><strong>Seasonal adjustment:</strong> port × quarter-of-year fixed effects plus calendar-quarter fixed effects. The first event-study benchmark is the same-season pre-treatment average. The second shifts the same event path so that the last untreated quarter, 2016 Q2, is exactly zero.</p></div>
+  </section>
+
+  <div class="analysis-section-heading"><h2>2. Seasonally adjusted within-Piraeus segment comparison</h2><p>Container versus non-container tonnage inside Piraeus; recurring quarter-of-year patterns are absorbed and no external donor port is used.</p></div>
+  <section class="panel">
+    <div class="chart-head"><div><span class="metric">Three-series internal comparison · dual axes</span><div class="legend"><span><i class="swatch" style="--swatch:var(--total)"></i>Container index · left axis</span><span><i class="swatch" style="--swatch:var(--external)"></i>Non-container index · left axis</span><span><i class="swatch" style="--swatch:var(--ratio)"></i>Container/non-container ratio change · right axis</span></div></div><span class="metric">Ratio benchmark: same-season pre-treatment average</span></div>
+    <p class="metric" id="ratio-subtitle">Ratio change relative to the same-season pre-treatment average</p>
+    <div class="chart-wrap"><svg id="within-combined-chart" class="series-chart"></svg><div id="within-combined-tooltip" class="tooltip"></div></div>
+    <div class="table-wrap"><table><thead><tr><th>Estimation window</th><th>Pre-treatment quarters</th><th>Post-treatment quarters</th><th>Seasonally adjusted within-port DiD</th><th>95% HAC CI</th><th>p-value</th></tr></thead><tbody id="within-table"></tbody></table></div>
+    <div class="interpretation"><h3>Treatment-effect estimates</h3><div id="within-interpretation"></div></div>
+    <div class="interpretation"><h3>Pre-treatment validity diagnostic</h3><p id="within-pretrend"></p></div>
+    <div class="event-notes"><p><strong>Model specification:</strong> quarter-of-year indicators absorb recurring seasonal differences in the container/non-container ratio. Inference uses Newey–West HAC with four lags because two aggregate segment series do not provide a credible clustering dimension.</p></div>
+  </section>
+
+  <div class="analysis-section-heading"><h2>3. Seasonally adjusted DiD — short sample</h2><p>All five container-active ports · 2014 Q1–2019 Q4 · 2016 Q3 excluded.</p></div>
+  <section class="panel">
+    <div class="chart-head"><span class="metric">Piraeus event study · short sample</span><div class="normalization-controls"><button class="short-mode active" data-mode="average">Same-season pre-treatment average</button><button class="short-mode" data-mode="q2">Last untreated quarter: 2016 Q2</button></div></div>
+    <div class="event-model" id="short-meta"></div><div class="chart-wrap"><svg id="short-event-chart" class="event-chart"></svg><div id="short-tooltip" class="tooltip"></div></div>
+    <div class="event-notes" id="short-notes"></div>
+    <details><summary>Quarterly coefficient table</summary><div class="table-wrap"><table><thead><tr><th>Quarter</th><th>Event time</th><th>Same-season pre-treatment estimate</th><th>95% CI</th><th>2016 Q2 estimate</th><th>95% CI</th></tr></thead><tbody id="short-event-table"></tbody></table></div></details>
+  </section>
+  <section class="panel">
+    <div class="chart-head"><span class="metric">Short-sample donor-pool sensitivity</span></div>
+    <div class="sensitivity-grid"><div class="chart-wrap"><svg id="short-sensitivity-chart" class="forest-chart"></svg></div><div class="table-wrap"><table><thead><tr><th>Model</th><th>Donors</th><th>Static DiD: one common post effect</th><th>Event-study mean: same-season pre benchmark</th><th>Event-study mean: 2016 Q2 benchmark</th><th>Joint pre-coefficient test p</th></tr></thead><tbody id="short-sensitivity-table"></tbody></table></div></div>
+    <div class="interpretation"><h3>Sensitivity reading</h3><p id="short-sensitivity-text"></p></div>
+  </section>
+
+  <div class="analysis-section-heading"><h2>4. Seasonally adjusted DiD — full sample</h2><p>All five container-active ports · 2014 Q1–2025 Q4 · later concessions and COVID-19 included.</p></div>
+  <section class="panel">
+    <div class="chart-head"><span class="metric">Piraeus event study · full sample</span><div class="normalization-controls"><button class="full-mode active" data-mode="average">Same-season pre-treatment average</button><button class="full-mode" data-mode="q2">Last untreated quarter: 2016 Q2</button></div></div>
+    <div class="event-model" id="full-meta"></div><div class="chart-wrap"><svg id="full-event-chart" class="event-chart"></svg><div id="full-tooltip" class="tooltip"></div></div>
+    <div class="event-notes" id="full-notes"></div>
+    <details><summary>Quarterly coefficient table</summary><div class="table-wrap"><table><thead><tr><th>Quarter</th><th>Event time</th><th>Same-season pre-treatment estimate</th><th>95% CI</th><th>2016 Q2 estimate</th><th>95% CI</th></tr></thead><tbody id="full-event-table"></tbody></table></div></details>
+  </section>
+  <section class="panel">
+    <div class="chart-head"><span class="metric">Full-sample donor-pool sensitivity</span></div>
+    <div class="sensitivity-grid"><div class="chart-wrap"><svg id="full-sensitivity-chart" class="forest-chart"></svg></div><div class="table-wrap"><table><thead><tr><th>Model</th><th>Donors</th><th>Static DiD: one common post effect</th><th>Event-study mean: same-season pre benchmark</th><th>Event-study mean: 2016 Q2 benchmark</th><th>Joint pre-coefficient test p</th></tr></thead><tbody id="full-sensitivity-table"></tbody></table></div></div>
+    <div class="interpretation"><h3>Sensitivity reading</h3><p id="full-sensitivity-text"></p></div>
+  </section>
+
+  <div class="analysis-section-heading"><h2>5. Seasonally adjusted staggered DiD</h2><p>Piraeus treated 2016 Q4 · Thessaloniki 2018 Q2 · Heraklio 2024 Q4.</p></div>
+  <section class="panel">
+    <div class="chart-head"><span class="metric">Stacked cohort design · never-treated controls only</span></div>
+    <div class="event-model"><span><strong>Controls:</strong> Volos and Lavrio</span><span><strong>Fixed effects:</strong> stack × port × quarter-of-year + stack × calendar quarter</span><span><strong>Inference:</strong> clustered by original port</span></div>
+    <div class="result-callout" id="staggered-callout"></div>
+    <div class="sensitivity-grid"><div class="chart-wrap"><svg id="staggered-chart" class="forest-chart"></svg></div><div class="table-wrap"><table><thead><tr><th>Cohort</th><th>Treatment</th><th>Post quarters</th><th>Seasonal DiD</th><th>95% CI</th><th>p-value</th></tr></thead><tbody id="staggered-table"></tbody></table></div></div>
+    <div class="interpretation"><h3>Interpretation</h3><p id="staggered-interpretation"></p></div>
+    <div class="event-notes"><p>This stacked design prevents already-treated Thessaloniki or Heraklio from acting as untreated controls. With only five original port clusters—and only two never-treated ports—its p-values and confidence intervals remain fragile.</p></div>
+  </section>
+
+  <section class="panel"><div class="chart-head"><span class="metric">Method and scope</span></div><div class="event-notes"><p><strong>Outcome construction:</strong> container tonnage is the sum of external/internal loaded/unloaded container cargo. Non-container tonnage equals total cargo minus container cargo.</p><p><strong>Seasonality:</strong> recurring port-specific quarterly patterns are absorbed with port × quarter-of-year fixed effects. Calendar-quarter fixed effects absorb shocks common to the included ports.</p><p><strong>Identification:</strong> the all-port models require credible counterfactual trends across ports; the within-Piraeus model instead requires container and non-container traffic to have comparable untreated evolution. Neither assumption is guaranteed.</p><p><strong>Transition treatment:</strong> the August 2016 transfer makes 2016 Q3 partially treated. It is excluded everywhere, with 2016 Q2 retained as the last fully untreated quarter and 2016 Q4 as the first full post-treatment quarter.</p><p><strong>Small-cluster warning:</strong> several clustered event-study covariance matrices required a numerical positive-semidefinite correction. With only three to five ports in the donor specifications, confidence intervals and p-values should be treated as descriptive sensitivity measures rather than definitive inference.</p></div></section>
+  <script>
+    const data=__INTEGRATED_CONTAINER_DATA__;
+    const pct=(x,d=1)=>`${x>=0?'+':''}${x.toFixed(d)}%`, logf=(x,d=3)=>`${x>=0?'+':''}${x.toFixed(d)}`, pval=p=>p==null?'—':p<.001?'&lt; 0.001':p.toFixed(3);
+    const interval=r=>`${pct(r.percentCiLow)} to ${pct(r.percentCiHigh)}`;
+    const el=(name,attrs={},text='')=>{const n=document.createElementNS('http://www.w3.org/2000/svg',name);Object.entries(attrs).forEach(([k,v])=>n.setAttribute(k,v));if(text)n.textContent=text;return n};
+    const clean=s=>String(s).replace(/[^a-z0-9]/gi,'-').toLowerCase();
+
+    const h=data.headline;
+    document.getElementById('headline-callout').innerHTML=`<p><strong>Static DiD—one common post-treatment effect:</strong> ${pct(h.did.percent)} (95% CI ${interval(h.did)}; p = ${pval(h.did.pValue)}). The event-study mean is ${pct(h.averagePre.percent)} using the same-season pre-treatment benchmark and ${pct(h.q2.percent)} using the 2016 Q2 benchmark.</p>`;
+    document.getElementById('headline-table').innerHTML=[
+      ['Static DiD—one common post-treatment effect',h.did,'One pre/post coefficient'],
+      ['Event-study mean—same-season pre-treatment benchmark',h.averagePre,'Average of dynamic post coefficients'],
+      ['Event-study mean—2016 Q2 benchmark',h.q2,'Same dynamic path shifted to the last untreated quarter']
+    ].map(([name,r,note])=>`<tr><th>${name}</th><td><strong>${pct(r.percent)}</strong></td><td>${interval(r)}</td><td>${pval(r.pValue)}</td><td>${note}</td></tr>`).join('');
+
+    function drawEvent(svgId,tipId,study,mode){
+      const svg=document.getElementById(svgId),tip=document.getElementById(tipId),rows=study.events;
+      const W=1120,H=520,m={l:72,r:24,t:50,b:68};
+      const key=mode==='q2'?'q2Estimate':'estimate',low=mode==='q2'?'q2CiLow':'ciLow',high=mode==='q2'?'q2CiHigh':'ciHigh';
+      const bounds=rows.flatMap(r=>[r[low],r[high]]).filter(Number.isFinite);
+      const spread=Math.max(...bounds)-Math.min(...bounds),step=.2;
+      const minY=Math.floor((Math.min(0,...bounds)-spread*.08)/step)*step;
+      const maxY=Math.ceil((Math.max(0,...bounds)+spread*.08)/step)*step;
+      const innerW=W-m.l-m.r,innerH=H-m.t-m.b;
+      const x=i=>m.l+i*innerW/(rows.length-1),y=v=>m.t+(maxY-v)*innerH/(maxY-minY);
+      svg.setAttribute('viewBox',`0 0 ${W} ${H}`);svg.replaceChildren();
+      for(let value=minY;value<=maxY+step/2;value+=step){
+        const cleanValue=Math.abs(value)<1e-9?0:value,yy=y(cleanValue);
+        svg.append(el('line',{x1:m.l,y1:yy,x2:W-m.r,y2:yy,class:cleanValue===0?'event-zero':'grid-line'}));
+        svg.append(el('text',{x:m.l-9,y:yy+4,class:'axis-label','text-anchor':'end'},cleanValue.toFixed(1)));
+      }
+      const treatment=rows.findIndex(r=>r.eventTime===0),tx=x(treatment);
+      svg.append(el('line',{x1:tx,y1:m.t,x2:tx,y2:m.t+innerH,class:'event-treatment'}));
+      svg.append(el('text',{x:Math.min(tx+7,W-m.r-115),y:m.t-14,class:'event-annotation'},'Treatment · 2016 Q4'));
+      const tickIndexes=rows.map((_,i)=>i).filter(i=>i===0||i===rows.length-1||i===treatment||i%2===0);
+      [...new Set(tickIndexes)].sort((a,b)=>a-b).forEach(i=>{
+        const k=rows[i].eventTime,label=k<0?`−${Math.abs(k)}`:String(k);
+        svg.append(el('text',{x:x(i),y:H-43,class:'year-label'},label));
+      });
+      rows.forEach((r,i)=>{
+        const xx=x(i),yy=y(r[key]),lowY=y(r[low]),highY=y(r[high]);
+        svg.append(el('line',{x1:xx,y1:highY,x2:xx,y2:lowY,class:'event-ci'}));
+        svg.append(el('line',{x1:xx-4,y1:highY,x2:xx+4,y2:highY,class:'event-ci'}));
+        svg.append(el('line',{x1:xx-4,y1:lowY,x2:xx+4,y2:lowY,class:'event-ci'}));
+        svg.append(el('circle',{cx:xx,cy:yy,r:5.5,class:`event-point${r.eventTime<0?' pre':''}`}));
+        const show=()=>{tip.innerHTML=`<strong>${r.quarter} · k = ${r.eventTime}</strong><div class="row"><span>Estimate</span><span class="value">${logf(r[key])}</span></div><div class="row"><span>95% CI</span><span class="value">${logf(r[low])} to ${logf(r[high])}</span></div>`;tip.style.display='block';tip.style.left=`${Math.min(Math.max(0,xx+14),W-240)}px`;tip.style.top=`${Math.min(Math.max(4,yy-85),H-100)}px`};
+        const hit=el('circle',{cx:xx,cy:yy,r:16,class:'hit'});hit.addEventListener('mouseenter',show);hit.addEventListener('mousemove',show);hit.addEventListener('mouseleave',()=>tip.style.display='none');svg.append(hit);
+      });
+      svg.append(el('text',{x:m.l+innerW/2,y:H-12,class:'axis-title','text-anchor':'middle'},'Quarters relative to 2016 Q4'));
+      svg.append(el('text',{x:16,y:m.t+innerH/2,class:'axis-title','text-anchor':'middle',transform:`rotate(-90 16 ${m.t+innerH/2})`},'Seasonally adjusted log coefficient'));
+    }
+    function wireStudy(prefix,study){document.getElementById(`${prefix}-meta`).innerHTML=`<span><strong>Ports:</strong> ${study.meta.ports}</span><span><strong>Controls:</strong> ${study.meta.controls}</span><span><strong>Quarters:</strong> ${study.meta.quarters}</span><span><strong>Observations:</strong> ${study.meta.observations}</span><span><strong>Fixed effects:</strong> ${study.meta.fixedEffects}</span>`;document.getElementById(`${prefix}-notes`).innerHTML=`<p><strong>Static DiD—one common post-treatment effect:</strong> ${pct(study.did.percent)} (p = ${pval(study.did.pValue)}); <strong>event-study mean—same-season pre-treatment benchmark:</strong> ${pct(study.averagePre.percent)} (p = ${pval(study.averagePre.pValue)}); <strong>event-study mean—2016 Q2 benchmark:</strong> ${pct(study.q2.percent)} (p = ${pval(study.q2.pValue)}); <strong>joint test of pre-treatment coefficients:</strong> p = ${pval(study.pretrend.pValue)}.</p><p>2016 Q3 is excluded. Confidence intervals use a t critical value with ports minus one degrees of freedom.</p>`;document.getElementById(`${prefix}-event-table`).innerHTML=study.events.map(r=>`<tr><th>${r.quarter}</th><td>${r.eventTime}</td><td>${logf(r.estimate)}</td><td>${logf(r.ciLow)} to ${logf(r.ciHigh)}</td><td>${logf(r.q2Estimate)}</td><td>${logf(r.q2CiLow)} to ${logf(r.q2CiHigh)}</td></tr>`).join('');let mode='average';drawEvent(`${prefix}-event-chart`,`${prefix}-tooltip`,study,mode);document.querySelectorAll(`.${prefix}-mode`).forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll(`.${prefix}-mode`).forEach(x=>x.classList.remove('active'));b.classList.add('active');mode=b.dataset.mode;drawEvent(`${prefix}-event-chart`,`${prefix}-tooltip`,study,mode)}))}
+
+    function niceStep(range,target=5){const raw=Math.max(range/target,1e-9),power=10**Math.floor(Math.log10(raw)),fraction=raw/power,multiplier=fraction<=1?1:fraction<=2?2:fraction<=5?5:10;return multiplier*power}
+    function drawWithinCombined(){
+      const svg=document.getElementById('within-combined-chart'),tip=document.getElementById('within-combined-tooltip'),rows=data.within.series;
+      const W=1120,H=500,m={l:78,r:86,t:48,b:64},innerW=W-m.l-m.r,innerH=H-m.t-m.b;
+      const ratioKey='ratioAveragePre';
+      const leftVals=rows.flatMap(r=>[r.containerIndex,r.noncontainerIndex]),leftStep=niceStep(Math.max(...leftVals)-Math.min(...leftVals));
+      const leftMin=Math.max(0,Math.floor((Math.min(...leftVals)-leftStep*.35)/leftStep)*leftStep),leftMax=Math.ceil((Math.max(...leftVals)+leftStep*.35)/leftStep)*leftStep;
+      const rightVals=rows.map(r=>r[ratioKey]),rightStep=niceStep(Math.max(...rightVals,0)-Math.min(...rightVals,0));
+      const rightMin=Math.floor((Math.min(...rightVals,0)-rightStep*.35)/rightStep)*rightStep,rightMax=Math.ceil((Math.max(...rightVals,0)+rightStep*.35)/rightStep)*rightStep;
+      const x=i=>m.l+i*innerW/(rows.length-1),yLeft=v=>m.t+(leftMax-v)*innerH/(leftMax-leftMin),yRight=v=>m.t+(rightMax-v)*innerH/(rightMax-rightMin);
+      svg.setAttribute('viewBox',`0 0 ${W} ${H}`);svg.replaceChildren();
+      for(let v=leftMin;v<=leftMax+leftStep/2;v+=leftStep){const yy=yLeft(v);svg.append(el('line',{x1:m.l,y1:yy,x2:W-m.r,y2:yy,class:'grid-line'}));svg.append(el('text',{x:m.l-9,y:yy+4,class:'axis-label','text-anchor':'end'},v.toFixed(0)))}
+      for(let v=rightMin;v<=rightMax+rightStep/2;v+=rightStep){svg.append(el('text',{x:W-m.r+9,y:yRight(v)+4,class:'axis-label right','text-anchor':'start'},`${v.toFixed(0)}%`))}
+      if(rightMin<=0&&rightMax>=0)svg.append(el('line',{x1:m.l,y1:yRight(0),x2:W-m.r,y2:yRight(0),class:'ratio-zero'}));
+      const treatment=rows.findIndex(r=>r.eventTime===0),tx=x(treatment);svg.append(el('line',{x1:tx,y1:m.t,x2:tx,y2:H-m.b,class:'event-treatment'}));svg.append(el('text',{x:Math.min(tx+7,W-m.r-115),y:m.t-15,class:'event-annotation'},'Treatment · 2016 Q4'));
+      const path=(key,y,className)=>svg.append(el('path',{d:rows.map((r,i)=>`${i?'L':'M'}${x(i)},${y(r[key])}`).join(' '),class:`series-line ${className}`}));
+      path('containerIndex',yLeft,'series-container');path('noncontainerIndex',yLeft,'series-noncontainer');path(ratioKey,yRight,'series-ratio');
+      rows.forEach((r,i)=>{if(r.quarterNumber===1)svg.append(el('text',{x:x(i),y:H-m.b+25,class:'year-label'},r.year));const hit=el('rect',{x:x(i)-7,y:m.t,width:14,height:innerH,class:'hit'});const show=()=>{tip.innerHTML=`<strong>${r.quarter}</strong><div class="row"><span>Container index</span><span class="value">${r.containerIndex.toFixed(1)}</span></div><div class="row"><span>Non-container index</span><span class="value">${r.noncontainerIndex.toFixed(1)}</span></div><div class="row"><span>Ratio change</span><span class="value">${pct(r[ratioKey])}</span></div>`;tip.style.display='block';tip.style.left=`${Math.min(Math.max(0,x(i)+12),W-235)}px`;tip.style.top=`${Math.max(5,m.t+15)}px`};hit.addEventListener('mouseenter',show);hit.addEventListener('mousemove',show);hit.addEventListener('mouseleave',()=>tip.style.display='none');svg.append(hit)});
+      svg.append(el('text',{x:m.l+innerW/2,y:H-12,class:'axis-title','text-anchor':'middle'},'Quarter'));
+      svg.append(el('text',{x:17,y:m.t+innerH/2,class:'axis-title','text-anchor':'middle',transform:`rotate(-90 17 ${m.t+innerH/2})`},'Cargo index · same-season pre-treatment average = 100'));
+      svg.append(el('text',{x:W-14,y:m.t+innerH/2,class:'axis-title right','text-anchor':'middle',transform:`rotate(90 ${W-14} ${m.t+innerH/2})`},'Container/non-container ratio change'));
+    }
+    drawWithinCombined();
+    document.getElementById('within-table').innerHTML=data.within.windows.map((w,i)=>`<tr><th><strong>${i===0?'Primary pre-COVID estimate':'Longer-run sensitivity estimate'}</strong><br><span class="metric">${w.label}</span></th><td>${w.preQuarters}</td><td>${w.postQuarters}</td><td><strong>${pct(w.seasonalDid.percent)}</strong></td><td>${interval(w.seasonalDid)}</td><td>${pval(w.seasonalDid.pValue)}</td></tr>`).join('');
+    const ws=data.within.windows[0],wf=data.within.windows[1];document.getElementById('within-interpretation').innerHTML=`<p><strong>Primary pre-COVID estimate · 2016 Q4–2019 Q4:</strong> after controlling for recurring quarter-of-year patterns, the container-to-non-container tonnage ratio was estimated to be <strong>${pct(ws.seasonalDid.percent)} higher</strong> than in the fully untreated pre-treatment period (95% HAC CI ${interval(ws.seasonalDid)}; p = ${pval(ws.seasonalDid.pValue)}).</p><p><strong>Longer-run sensitivity estimate · 2016 Q4–2025 Q4:</strong> when COVID-19 and the later adjustment period are included, the seasonally adjusted estimate is <strong>${pct(wf.seasonalDid.percent)}</strong> (95% HAC CI ${interval(wf.seasonalDid)}; p = ${pval(wf.seasonalDid.pValue)}).</p><p><strong>Overall reading:</strong> the positive early estimate is not sustained over the longer period. Neither estimate is statistically precise, so the analysis does not show a robust, persistent container-specific increase and does not prove that the concession had no effect.</p>`;document.getElementById('within-pretrend').innerHTML=`This is not another treatment-effect estimate. It tests whether the container/non-container ratio was already changing before treatment. After controlling for quarter-of-year patterns, the ratio changed by <strong>${pct(data.within.pretrend.percent,2)} per quarter</strong> on a linear pre-treatment trend (HAC p = ${pval(data.within.pretrend.pValue)}). This borderline pre-trend evidence weakens the internal parallel-trends assumption.`;
+
+    wireStudy('short',data.short.study);wireStudy('full',data.full.study);
+    function drawForest(svgId,items,valueKey='did'){const svg=document.getElementById(svgId),W=540,H=360,m={l:165,r:55,t:28,b:48};svg.setAttribute('viewBox',`0 0 ${W} ${H}`);svg.replaceChildren();const vals=items.flatMap(x=>[x[valueKey].percentCiLow,x[valueKey].percentCiHigh]),lo=Math.min(...vals,0),hi=Math.max(...vals,0),pad=(hi-lo)*.12||5,x=v=>m.l+(v-(lo-pad))*(W-m.l-m.r)/(hi-lo+2*pad),step=(H-m.t-m.b)/items.length;svg.append(el('line',{x1:x(0),y1:m.t,x2:x(0),y2:H-m.b,class:'forest-zero'}));items.forEach((item,i)=>{const r=item[valueKey],yy=m.t+step*(i+.5);svg.append(el('text',{x:m.l-10,y:yy+4,class:'forest-label','text-anchor':'end'},item.name||item.port));svg.append(el('line',{x1:x(r.percentCiLow),y1:yy,x2:x(r.percentCiHigh),y2:yy,class:'forest-ci'}));svg.append(el('circle',{cx:x(r.percent),cy:yy,r:6,class:'forest-point'}));svg.append(el('text',{x:W-m.r+6,y:yy+4,class:'forest-value'},pct(r.percent))) });for(let i=0;i<5;i++){const v=lo-pad+i*(hi-lo+2*pad)/4;svg.append(el('text',{x:x(v),y:H-17,class:'axis-label','text-anchor':'middle'},`${v.toFixed(0)}%`))}}
+    function wireSensitivity(prefix,items){drawForest(`${prefix}-sensitivity-chart`,items);document.getElementById(`${prefix}-sensitivity-table`).innerHTML=items.map(x=>`<tr><th>${x.name}</th><td>${x.donors.length}<br><span class="metric">${x.donors.join(', ')}</span></td><td>${pct(x.did.percent)}<br><span class="metric">p=${pval(x.did.pValue)}</span></td><td>${pct(x.averagePre.percent)}</td><td>${pct(x.q2.percent)}</td><td>${pval(x.pretrend.pValue)}</td></tr>`).join('');const estimates=items.map(x=>x.did.percent),spread=Math.max(...estimates)-Math.min(...estimates);document.getElementById(`${prefix}-sensitivity-text`).innerHTML=`The seasonally adjusted DiD ranges from <strong>${pct(Math.min(...estimates))}</strong> to <strong>${pct(Math.max(...estimates))}</strong> across comparison groups—a spread of ${spread.toFixed(1)} percentage points. The sign and magnitude should therefore be read together with the donor definitions and the very small number of port clusters.`}
+    wireSensitivity('short',data.short.sensitivity);wireSensitivity('full',data.full.sensitivity);
+
+    document.getElementById('staggered-callout').innerHTML=`<p><strong>Pooled stacked ATT:</strong> ${pct(data.staggered.summary.percent)} (95% CI ${interval(data.staggered.summary)}; p = ${pval(data.staggered.summary.pValue)}). Each treated port is compared only with Volos and Lavrio.</p>`;
+    document.getElementById('staggered-table').innerHTML=data.staggered.cohorts.map(x=>`<tr><th>${x.port}</th><td>${x.treatmentQuarter}</td><td>${x.postQuarters}</td><td><strong>${pct(x.percent)}</strong></td><td>${pct(x.percentCiLow)} to ${pct(x.percentCiHigh)}</td><td>${pval(x.pValue)}</td></tr>`).join('');
+    drawForest('staggered-chart',data.staggered.cohorts.map(x=>({name:x.port,did:x})));
+    const cohortText=data.staggered.cohorts.map(x=>`${x.port} ${pct(x.percent)}`).join(', ');document.getElementById('staggered-interpretation').innerHTML=`The pooled estimate combines differently timed comparisons without using already-treated ports as controls. Cohort estimates are ${cohortText}. Differences across cohorts and the wide small-cluster intervals are evidence of substantial treatment-effect and counterfactual uncertainty.`;
+  </script>
+</main></body></html>

@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Within-Piraeus segment comparison</title>
+  <style>
+    :root{--ink:#17223b;--muted:#63708a;--paper:#f5f7fb;--card:#fff;--line:#dce2ec;--navy:#153b6b;--blue:#2878b5;--orange:#e27d36;--green:#18866b;--red:#b84949;--shadow:0 12px 32px rgba(23,34,59,.08)}
+    *{box-sizing:border-box} body{margin:0;background:var(--paper);color:var(--ink);font-family:Inter,ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;line-height:1.55}
+    .hero{background:linear-gradient(125deg,#10294a,#195d83);color:#fff;padding:54px 24px 66px}.wrap{max-width:1160px;margin:auto}.eyebrow{text-transform:uppercase;letter-spacing:.13em;font-size:.76rem;font-weight:750;opacity:.78}.hero h1{max-width:850px;font-size:clamp(2rem,5vw,3.55rem);line-height:1.04;margin:.55rem 0 1rem}.hero p{max-width:850px;font-size:1.08rem;color:#dcecf6;margin:0}
+    main{max-width:1160px;margin:-34px auto 70px;padding:0 24px}.card{background:var(--card);border:1px solid rgba(220,226,236,.9);border-radius:18px;box-shadow:var(--shadow);padding:26px;margin-bottom:22px}.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:22px}.kpi{background:#fff;border:1px solid var(--line);border-radius:15px;padding:19px;box-shadow:0 6px 20px rgba(23,34,59,.05)}.kpi .label{font-size:.78rem;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);font-weight:750}.kpi .value{font-size:1.8rem;font-weight:800;margin:.15rem 0;color:var(--navy)}.kpi .sub{font-size:.82rem;color:var(--muted)}
+    h2{font-size:1.45rem;margin:0 0 12px}h3{font-size:1.04rem;margin:18px 0 8px}.lede{font-size:1.06rem}.callout{border-left:4px solid var(--green);background:#eef8f5;border-radius:0 12px 12px 0;padding:15px 18px}.warning{border-left-color:var(--orange);background:#fff7ef}.grid{display:grid;grid-template-columns:1.45fr 1fr;gap:22px}.chart-head{display:flex;gap:15px;justify-content:space-between;align-items:flex-start;flex-wrap:wrap}.toggle{display:flex;padding:4px;background:#eef2f7;border-radius:10px}.toggle button{border:0;background:transparent;padding:8px 11px;border-radius:7px;color:var(--muted);font-weight:700;cursor:pointer}.toggle button.active{background:#fff;color:var(--navy);box-shadow:0 2px 8px rgba(23,34,59,.11)}
+    svg{display:block;width:100%;height:auto}.axis{stroke:#aeb8c8;stroke-width:1}.gridline{stroke:#e8ecf2;stroke-width:1}.zero{stroke:#8e99aa;stroke-dasharray:5 5}.treatment{stroke:var(--orange);stroke-width:2;stroke-dasharray:5 4}.series{fill:none;stroke:var(--blue);stroke-width:3;stroke-linejoin:round;stroke-linecap:round}.dot{fill:var(--blue);stroke:#fff;stroke-width:1.5}.excluded{fill:#fff;stroke:var(--orange);stroke-width:2}.axis-label{font-size:11px;fill:#69758b}.legend{font-size:.82rem;color:var(--muted);margin-top:8px}.legend b{color:var(--orange)}
+    table{width:100%;border-collapse:collapse;font-size:.9rem}th,td{text-align:right;padding:11px 10px;border-bottom:1px solid var(--line);vertical-align:top}th:first-child,td:first-child{text-align:left}th{color:var(--muted);font-size:.75rem;text-transform:uppercase;letter-spacing:.04em}td strong{color:var(--navy)}.table-wrap{overflow-x:auto}
+    .formula{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;background:#f1f4f8;padding:14px 16px;border-radius:10px;overflow:auto;font-size:.9rem}.steps{margin:0;padding-left:1.2rem}.steps li{margin:.48rem 0}.small{font-size:.84rem;color:var(--muted)}.positive{color:var(--green)!important}.negative{color:var(--red)!important}.footer{text-align:center;color:var(--muted);font-size:.8rem;margin-top:26px}
+    @media(max-width:900px){.kpis{grid-template-columns:repeat(2,1fr)}.grid{grid-template-columns:1fr}}@media(max-width:560px){.kpis{grid-template-columns:1fr}.card{padding:19px}.hero{padding-top:40px}main{padding:0 14px}}
+  </style>
+</head>
+<body>
+  <header class="hero"><div class="wrap">
+    <div class="eyebrow">Robustness and mechanism test</div>
+    <h1>Within-Piraeus segment comparison</h1>
+    <p>Container versus non-container tonnage inside Piraeus, with no external donor ports. Treatment begins in 2016 Q4; 2016 Q3 is excluded.</p>
+  </div></header>
+  <main>
+    <section class="kpis" id="kpis"></section>
+
+    <section class="card">
+      <h2>Short answer</h2>
+      <div class="callout" id="shortAnswer"></div>
+      <p class="lede">This design asks whether Piraeus container traffic improved <em>relative to Piraeus non-container traffic</em> after the ownership transfer. Quarter fixed effects absorb shocks common to both segments inside the port.</p>
+    </section>
+
+    <section class="card">
+      <div class="chart-head">
+        <div><h2>Container performance relative to non-container cargo</h2><p class="small">Each point is the percentage change in the container/non-container tonnage ratio relative to the selected benchmark.</p></div>
+        <div class="toggle" aria-label="Normalization selector">
+          <button class="active" data-mode="averagePre">Average clean pre-period</button>
+          <button data-mode="q2">2016 Q2</button>
+        </div>
+      </div>
+      <svg id="eventChart" viewBox="0 0 1080 420" role="img" aria-label="Quarterly relative container performance"></svg>
+      <div class="legend"><b>Orange line:</b> treatment begins, 2016 Q4. The open marker indicates excluded 2016 Q3. Hover over points for values.</div>
+    </section>
+
+    <section class="card">
+      <h2>Estimates</h2>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Sample</th><th>Container growth</th><th>Non-container growth</th><th>Within-port DiD</th><th>95% HAC CI</th><th>p-value</th><th>Seasonally adjusted DiD</th><th>Q2-normalized event average</th></tr></thead>
+        <tbody id="resultsRows"></tbody>
+      </table></div>
+      <p class="small">Growth columns compare geometric-average post-treatment tonnage with geometric-average pre-treatment tonnage. The DiD is their relative change, not their percentage-point difference. The seasonal specification adds quarter-of-year indicators to the log cargo ratio. Newey–West HAC inference uses four quarterly lags.</p>
+    </section>
+
+    <section class="grid">
+      <article class="card">
+        <h2>How it is calculated</h2>
+        <div class="formula">log(tonnage<sub>s,t</sub>) = segment FE + quarter FE + β(Container × Post) + error</div>
+        <p>The coefficient β is exactly equal to:</p>
+        <div class="formula">average post log(Container / Non-container)<br>− average pre log(Container / Non-container)</div>
+        <p>The dashboard reports <strong>100 × [exp(β) − 1]</strong>. The explicit fixed-effects regression and the collapsed log-ratio calculation agree to numerical precision.</p>
+        <h3>Event-study normalization</h3>
+        <p>With average-pre normalization, the average post-treatment event-study effect is mechanically identical to the static DiD. With 2016 Q2 normalization, every quarter is instead compared with that single quarter, so the displayed average can differ.</p>
+      </article>
+      <aside class="card">
+        <h2>What the design buys—and assumes</h2>
+        <ol class="steps">
+          <li><strong>No donor-port choice:</strong> Volos or another port is not required to represent Piraeus.</li>
+          <li><strong>Port-wide shocks absorbed:</strong> quarter fixed effects remove common proportional shocks to both Piraeus segments.</li>
+          <li><strong>New identifying assumption:</strong> absent treatment, the container/non-container ratio would have remained stable apart from ordinary fluctuations.</li>
+        </ol>
+        <div class="callout warning"><strong>Not a perfect placebo.</strong> Global containerization, segment-specific demand, reclassification, substitution between cargo types, or treatment spillovers into non-container activity can change the ratio even without—or because of—the concession.</div>
+      </aside>
+    </section>
+
+    <section class="card">
+      <h2>Inference and pre-treatment evidence</h2>
+      <p id="pretrendText"></p>
+      <p>With only two aggregate segment series, clustering by segment would mean only two clusters and would not be credible. The static regression therefore uses Newey–West HAC standard errors on the quarterly log ratio. The fully flexible quarterly event path is saturated, so its pointwise path is shown descriptively without conventional confidence intervals.</p>
+      <p class="small">These choices make the limits visible rather than manufacturing apparent precision from two clusters.</p>
+    </section>
+
+    <section class="card">
+      <h2>Interpretation</h2>
+      <p id="interpretation"></p>
+      <p>This result is best treated as a <strong>mechanism/negative-control robustness test</strong> alongside the donor-port estimates. Agreement across designs would be especially persuasive; disagreement indicates that the headline result depends on the counterfactual being used.</p>
+    </section>
+    <div class="footer">Source: port-cargo-master-2014-2025.xlsx · Generated by Scripts/within-piraeus-segment-did.R</div>
+  </main>
+
+  <script>
+    const data = __WITHIN_PIRAEUS_DATA__;
+    const short = data.windows[0], full = data.windows[1];
+    const fmt = (x,d=1) => `${x>=0?'+':''}${x.toFixed(d)}%`;
+    const pfmt = p => p < .001 ? '&lt; 0.001' : p.toFixed(3);
+    const cls = x => x >= 0 ? 'positive' : 'negative';
+
+    document.getElementById('kpis').innerHTML = [
+      ['Short-sample DiD', fmt(short.static.percent), `2014–2019 · p = ${short.static.pValue.toFixed(3)}`],
+      ['Full-sample DiD', fmt(full.static.percent), `2014–2025 · p = ${full.static.pValue.toFixed(3)}`],
+      ['Container growth', fmt(short.containerGrowth), 'short-sample pre/post'],
+      ['Non-container growth', fmt(short.noncontainerGrowth), 'short-sample pre/post']
+    ].map(x=>`<div class="kpi"><div class="label">${x[0]}</div><div class="value ${cls(parseFloat(x[1]))}">${x[1]}</div><div class="sub">${x[2]}</div></div>`).join('');
+
+    const sig = short.static.pValue < .05;
+    document.getElementById('shortAnswer').innerHTML = `<strong>Short-sample result:</strong> container tonnage rose ${fmt(short.containerGrowth)} from its pre-treatment geometric average, while non-container tonnage rose ${fmt(short.noncontainerGrowth)}. The relative DiD is <strong>${fmt(short.static.percent)}</strong> (95% HAC CI ${fmt(short.static.percentCiLow)} to ${fmt(short.static.percentCiHigh)}; p = ${short.static.pValue.toFixed(3)}). ${sig?'This is statistically distinguishable from zero at 5%.':'This is not statistically distinguishable from zero.'}`;
+
+    document.getElementById('resultsRows').innerHTML = data.windows.map(w => `<tr>
+      <td><strong>${w.label}</strong><br><span class="small">${w.preQuarters} pre; ${w.postQuarters} post quarters</span></td>
+      <td>${fmt(w.containerGrowth)}</td><td>${fmt(w.noncontainerGrowth)}</td>
+      <td class="${cls(w.static.percent)}"><strong>${fmt(w.static.percent)}</strong></td>
+      <td>${fmt(w.static.percentCiLow)} to ${fmt(w.static.percentCiHigh)}</td><td>${pfmt(w.static.pValue)}</td>
+      <td>${fmt(w.seasonal.percent)}<br><span class="small">p = ${w.seasonal.pValue.toFixed(3)}</span></td>
+      <td>${fmt(w.q2AveragePostPercent)}</td></tr>`).join('');
+
+    const trendQuarter = 100*(Math.exp(data.pretrend.estimate)-1);
+    document.getElementById('pretrendText').innerHTML = `Before treatment, the container/non-container ratio changed by an estimated <strong>${fmt(trendQuarter,2)} per quarter</strong> on a linear trend (HAC p = ${data.pretrend.pValue.toFixed(3)}). ${data.pretrend.pValue<.05?'This is evidence of a differential pre-treatment trend and weakens the identifying assumption.':'The test does not detect a differential linear pre-trend, but ten clean pre-treatment quarters provide limited power.'}`;
+
+    const direction = short.static.percent >= 0 ? 'slightly outperformed' : 'underperformed';
+    document.getElementById('interpretation').innerHTML = `Through 2019, containers ${direction} non-container cargo after the transfer, but the estimated relative change is small (${fmt(short.static.percent)}) and imprecise. Over the full period through 2025, the relative estimate becomes ${fmt(full.static.percent)}, because non-container tonnage grew more than container tonnage on the pre/post comparison. On this internal counterfactual, the data therefore <strong>do not show a robust, persistent container-specific increase</strong>. This does not establish that the concession had no effect; it shows that any effect is not cleanly separated from Piraeus-wide or segment-specific movements by this design.`;
+
+    const svg = document.getElementById('eventChart');
+    let mode = 'averagePre';
+    function drawChart(){
+      const rows = data.series, vals = rows.filter(r=>!r.excluded).map(r=>mode==='averagePre'?r.averagePreEffect:r.q2Effect);
+      const W=1080,H=420,m={l:64,r:20,t:24,b:54};
+      const minV=Math.min(...vals,0), maxV=Math.max(...vals,0), pad=Math.max((maxV-minV)*.12,5);
+      const lo=minV-pad, hi=maxV+pad;
+      const x=i=>m.l+i*(W-m.l-m.r)/(rows.length-1), y=v=>m.t+(hi-v)*(H-m.t-m.b)/(hi-lo);
+      const ticks=5, yTicks=Array.from({length:ticks},(_,i)=>lo+i*(hi-lo)/(ticks-1));
+      let html=yTicks.map(v=>`<line class="gridline" x1="${m.l}" x2="${W-m.r}" y1="${y(v)}" y2="${y(v)}"/><text class="axis-label" x="${m.l-9}" y="${y(v)+4}" text-anchor="end">${v.toFixed(0)}%</text>`).join('');
+      html+=`<line class="zero" x1="${m.l}" x2="${W-m.r}" y1="${y(0)}" y2="${y(0)}"/>`;
+      const treatmentPos=rows.findIndex(r=>r.eventTime===0);
+      html+=`<line class="treatment" x1="${x(treatmentPos)}" x2="${x(treatmentPos)}" y1="${m.t}" y2="${H-m.b}"/><text class="axis-label" x="${x(treatmentPos)+6}" y="${m.t+12}">Treatment</text>`;
+      const segments=[]; let current=[];
+      rows.forEach((r,i)=>{if(r.excluded){if(current.length)segments.push(current);current=[]}else current.push([x(i),y(mode==='averagePre'?r.averagePreEffect:r.q2Effect)])});if(current.length)segments.push(current);
+      html+=segments.map(s=>`<path class="series" d="${s.map((p,i)=>(i?'L':'M')+p[0].toFixed(1)+','+p[1].toFixed(1)).join(' ')}"/>`).join('');
+      rows.forEach((r,i)=>{const v=mode==='averagePre'?r.averagePreEffect:r.q2Effect;html+=`<circle class="${r.excluded?'excluded':'dot'}" cx="${x(i)}" cy="${y(v)}" r="${r.excluded?5:3.8}"><title>${r.quarter}: ${fmt(v)}${r.excluded?' (excluded from estimation)':''}</title></circle>`});
+      rows.forEach((r,i)=>{if(r.quarterNumber===1)html+=`<text class="axis-label" x="${x(i)}" y="${H-m.b+24}" text-anchor="middle">${r.year}</text>`});
+      html+=`<text class="axis-label" x="${(m.l+W-m.r)/2}" y="${H-9}" text-anchor="middle">Quarter</text><text class="axis-label" transform="translate(15 ${(m.t+H-m.b)/2}) rotate(-90)" text-anchor="middle">Relative container performance (%)</text>`;
+      svg.innerHTML=html;
+    }
+    document.querySelectorAll('.toggle button').forEach(button=>button.addEventListener('click',()=>{document.querySelectorAll('.toggle button').forEach(b=>b.classList.remove('active'));button.classList.add('active');mode=button.dataset.mode;drawChart()}));
+    drawChart();
+  </script>
+</body>
+</html>
